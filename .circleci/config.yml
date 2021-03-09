@@ -9,19 +9,21 @@ orbs:
 jobs:
 
   print_hello:
+    environment:
+      MSG: "hello"
     docker:
       - image: circleci/node:13.8.0
     steps:
-      -run:
+      - run:
           name: print hello
           command:
-            echo "hello"
+            echo $MSG
 
   print_world:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      -run:
+      - run:
           name: print world
           command:
             echo "world"  
@@ -34,5 +36,5 @@ workflows:
       - welcome/run
       - print_hello
       - print_world:
-        requires: [print_hello]
+          requires: [print_hello]
       
