@@ -8,6 +8,14 @@ commands:
     steps:
       - run: echo ${CIRCLE_WORKFLOW_ID}
 
+  print_id_with_param:  
+    description: "to print pipeline id through command using parameter"
+    parameters:
+      id:
+        type: string
+    steps:
+      - run: echo << parameters.id >>  
+
 orbs:
   # Declare a dependency on the welcome-orb
   welcome: circleci/welcome-orb@0.4.1
@@ -59,6 +67,13 @@ jobs:
     steps:
       - print_pipeline_id
 
+  run_param_command:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - print_id_with_param:
+          id: << pipeline.id >>    
+
 
 workflows:
   # Name the workflow "welcome"
@@ -74,4 +89,7 @@ workflows:
           requires: [save_hello_world_output]  
       - run_command:
           requires: [print_output_file]  
+      - run_param_command:
+          requires: [run_command]
+
       
