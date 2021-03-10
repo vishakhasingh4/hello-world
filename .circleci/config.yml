@@ -9,13 +9,15 @@ orbs:
 jobs:
 
   print_hello:
+    environment:
+      MSG: "hello"
     docker:
       - image: circleci/node:13.8.0
     steps:
       - run:
           name: print hello
           command:
-            echo "hello"
+            echo $MSG
 
   print_world:
     docker:
