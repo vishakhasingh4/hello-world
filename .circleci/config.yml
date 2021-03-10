@@ -74,6 +74,15 @@ jobs:
       - print_id_with_param:
           id: << pipeline.id >>    
 
+  when_error:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: return 1
+      - run:
+          name: on error
+          command: echo "Hello Error"
+          when: on_fail  
 
 workflows:
   # Name the workflow "welcome"
@@ -91,5 +100,7 @@ workflows:
           requires: [print_output_file]  
       - run_param_command:
           requires: [run_command]
+      - when_error:
+          requires: [run_param_command]    
 
       
